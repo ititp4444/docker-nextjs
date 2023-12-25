@@ -1,0 +1,4 @@
+FROM node:20.5.0-bookworm-slim as base
+WORKDIR /src
+RUN [ "npm", "install", "-g", "npm@10.2.5" ]
+FROM base as app
