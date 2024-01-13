@@ -3,7 +3,8 @@ services:
     base:
         build:
             context: .
-            dockerfile: Dockerfile.base
+            target: base
+            dockerfile: ./Dockerfile.dev
         image: node_base
         volumes:
             - type: bind
@@ -12,8 +13,8 @@ services:
         entrypoint: ['npx', '-y', 'create-next-app', '.']
         command:
             [
-                '--tailwind',
                 '--ts',
+                '--tailwind',
                 '--eslint',
                 '--app',
                 '--no-src-dir',
@@ -21,10 +22,19 @@ services:
                 '@/*'
             ]
     installer:
+        build:
+            context: .
+            target: base
+            dockerfile: ./Dockerfile.dev
         image: node_base
         volumes:
             - type: bind
               source: ./src
               target: /src
         entrypoint: ['npm', 'install']
-        command: ['prettier', 'eslint-config-prettier']
+        command: [
+                '@reduxjs/toolkit',
+                'react-redux',
+                'redux',
+                'next-redux-wrapper'
+            ] # package

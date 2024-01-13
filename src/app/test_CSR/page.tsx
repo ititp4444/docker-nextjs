@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import styles from './page.module.css'
+
+import Header from '@/components/layout/header/Header'
 
 interface Data {
     id: number
@@ -37,7 +38,7 @@ const Test = () => {
     if (!productID) return ''
     return (
         <div>
-            <h1>Test CSR page</h1>
+            <h1>Test CSR page です</h1>
             <p>{productID}</p>
             <div>{data?.title}</div>
         </div>

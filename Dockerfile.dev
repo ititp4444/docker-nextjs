@@ -1,10 +1,15 @@
-FROM node:20.4.0-bookworm-slim as base
+FROM node:20.5.0-alpine as base
+ARG DEV_OPORT
 WORKDIR /src
-COPY src ./src
-FROM base as app
+
+RUN [ "npm", "install", "-g", "npm@10.3.0" ]
+
+FROM base as dev
+COPY ./src/package*.json .
+COPY ./src/next.config.js .
+COPY ./src/tsconfig.json .
+COPY ./src .
 ENV NODE_ENV=development
-COPY ./src/package*.json ./
-COPY next.config.js .
-COPY tsconfig.json .
-RUN [ "npm", "install" ]
-CMD ["npm", "run", "dev"]
+ENV DEV_OPORT=DEV_OPORT
+
+CMD [ "npm","run", "dev"]
