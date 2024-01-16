@@ -1,11 +1,17 @@
 import React, { FC } from 'react'
-import ReduxProvider from '@/store/provider'
+
 import Header from './Header'
-const HeaderContainer: FC = () => {
+import UserProvider from '@/features/user/store/provider'
+
+const HeaderContainer: FC = async (props) => {
+    // const ttt = await fetchUserData()
+    // await store.dispatch(login(ttt))
+    // console.log(ttt)
+    // console.log(props)
     return (
-        <ReduxProvider>
+        <UserProvider arg>
             <Header />
-        </ReduxProvider>
+        </UserProvider>
     )
 }
 export default HeaderContainer

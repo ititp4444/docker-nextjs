@@ -36,5 +36,9 @@ services:
                 '@reduxjs/toolkit',
                 'react-redux',
                 'redux',
-                'next-redux-wrapper'
+                'next-redux-wrapper',
+                'prettier',
+                'eslint-config-prettier',
+                'nrstate'
+                # '@tailwindcss/jit'
             ] # package

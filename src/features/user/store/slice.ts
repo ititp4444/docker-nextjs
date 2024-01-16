@@ -1,23 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { User } from '../types'
+import { fetchUserData } from '../api'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '@/store'
 
 const initialState: User = {
-    name: 'name',
+    name: null,
     isSignedIn: false
 }
-export const fetchUserData = createAsyncThunk(
+
+export const userDataThunk = createAsyncThunk(
     'user/fetchUserData',
-    async () => {
-        try {
-            const res = await fetch('https://dummyjson.com/products/1')
-            const result = await res.json()
-            return result.title
-        } catch {
-            return initialState.name
-        }
-    }
+    fetchUserData
 )
+
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -27,12 +23,13 @@ const userSlice = createSlice({
             state.isSignedIn = true
         },
         logout: (state: User) => {
-            state.name = ''
+            state.name = null
             state.isSignedIn = false
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchUserData.fulfilled, (state, action) => {
+        builder.addCase(userDataThunk.fulfilled, (state, action) => {
+            console.log(action, 'fulfilled')
             if (action.payload) {
                 state.name = action.payload
                 state.isSignedIn = true
@@ -40,14 +37,25 @@ const userSlice = createSlice({
                 state.isSignedIn = false
             }
         })
-        builder.addCase(fetchUserData.pending, (state) => {
+        builder.addCase(userDataThunk.pending, (state) => {
+            console.log(state, 'pending')
             state.isSignedIn = false
         })
-        builder.addCase(fetchUserData.rejected, (state) => {
+        builder.addCase(userDataThunk.rejected, (state) => {
+            console.log(state, 'rejected')
             state.isSignedIn = false
         })
+        builder.addDefaultCase((state) => {
+            // console.log(state, 'addDefaultCase')
+        })
+        // console.log(builder)
     }
 })
+// userDataThunk()
 
 export const { login, logout } = userSlice.actions
+
+// selector
+export const selectorUserData = (state: RootState) => state.user
+
 export default userSlice.reducer
